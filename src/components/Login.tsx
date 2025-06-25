@@ -9,6 +9,7 @@ import { useNavigate } from 'react-router-dom'
 export function Login() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const [referralCode, setReferralCode] = useState('')
   const [loading, setLoading] = useState(false)
   const navigate = useNavigate()
 
@@ -28,11 +29,22 @@ export function Login() {
   const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault()
     setLoading(true)
-    const { error } = await supabase.auth.signUp({ email, password })
+    const { data, error } = await supabase.auth.signUp({ email, password })
     if (error) {
       toast.error(error.message)
-    } else {
-      toast.success('Account created! Please log in.')
+    } else if (data.user) {
+      if (referralCode) {
+        const { error: referralError } = await supabase.functions.invoke('handle-referral', {
+          body: { referral_code: referralCode, new_user_id: data.user.id },
+        })
+        if (referralError) {
+          toast.error('Invalid referral code')
+        } else {
+          toast.success('Account created with referral bonus! Please log in.')
+        }
+      } else {
+        toast.success('Account created! Please log in.')
+      }
     }
     setLoading(false)
   }
@@ -56,6 +68,12 @@ export function Login() {
               placeholder="Password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
+            />
+            <Input
+              type="text"
+              placeholder="Referral Code (Optional)"
+              value={referralCode}
+              onChange={(e) => setReferralCode(e.target.value)}
             />
             <div className="flex space-x-4">
               <Button onClick={handleLogin} disabled={loading} className="w-full">
