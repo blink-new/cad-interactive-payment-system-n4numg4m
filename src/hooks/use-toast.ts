@@ -4,7 +4,6 @@
 import * as React from "react"
 
 import type {
-  ToastActionElement,
   ToastProps,
 } from "@/components/ui/toast"
 
@@ -15,9 +14,10 @@ type ToasterToast = ToastProps & {
   id: string
   title?: React.ReactNode
   description?: React.ReactNode
-  action?: React.ReactElement<typeof ToastAction>;
+  action?: React.ReactElement
 }
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const actionTypes = ["add-toast", "update-toast", "dismiss-toast", "remove-toast"] as const;
 
 type ActionType = typeof actionTypes[number];

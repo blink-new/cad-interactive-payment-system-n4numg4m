@@ -1,4 +1,4 @@
-import { CreditCard, MapleLeaf } from 'lucide-react'
+import { CreditCard, Leaf } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 
 export function Header() {
@@ -8,7 +8,7 @@ export function Header() {
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-3">
             <div className="flex items-center justify-center w-10 h-10 bg-gradient-to-br from-red-500 to-red-600 rounded-lg">
-              <MapleLeaf className="w-6 h-6 text-white" />
+              <Leaf className="w-6 h-6 text-white" />
             </div>
             <div>
               <h1 className="text-xl font-bold text-gray-900">CAD Pay</h1>
